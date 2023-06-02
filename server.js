@@ -493,6 +493,13 @@ if(currentUser)
 
 		socket.broadcast.emit('ACTIVATION_TOGGLE', pack.object,pack.state)
 	})
+
+	socket.on("TOGGLE_CAMERA", function(data){
+		var pack = JSON.parse(data)
+
+		console.log("Encendiendo camara")
+		socket.broadcast.emit('CAMERA_ACTIVATION', pack.local_player_id)
+	})
 		
 });//END_IO.ON
 
