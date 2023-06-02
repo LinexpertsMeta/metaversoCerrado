@@ -86,6 +86,14 @@ window.addEventListener('load', function() {
 		}
 		
 	});//END_SOCKET.ON
+
+	socket.on('UPDATE_CAMERA_PLAYER', function(id,texture){
+		var currentUser = id+':'+texture
+
+		if(window.unityInstance!=null){
+			window.unityInstance.SendMessage('NetworkManager', 'OnUpdateCamera', currentUser)
+		}
+	})//END_SOCKET.ON
 	
 	
 	socket.on('UPDATE_USER_LIST', function(id,name,publicAddress) {

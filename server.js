@@ -2,6 +2,7 @@
 *@autor: Rio 3D Studios
 *@description:  java script server that works as master server of the Basic Example of WebGL Multiplayer Kit
 */
+const { Console } = require('console');
 var express  = require('express');//import express NodeJS framework module
 var app      = express();// create an object of the express module
 var http     = require('http').Server(app);// create a http web server using the http library
@@ -499,6 +500,12 @@ if(currentUser)
 
 		console.log("Encendiendo camara")
 		socket.broadcast.emit('CAMERA_ACTIVATION', pack.local_player_id)
+	})
+
+	socket.on("UPDATE_CAMERA", function(data){
+		var pack = JSON.parse(data)
+
+		socket.broadcast.emit('UPDATE_CAMERA_PLAYER', pack.local_player_id, pack.texture)
 	})
 		
 });//END_IO.ON
