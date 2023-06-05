@@ -91,7 +91,7 @@ window.addEventListener('load', function() {
 		var currentUser = id+':'+texture
 
 		if(window.unityInstance!=null){
-			window.unityInstance.SendMessage('NetworkManager', 'OnUpdateCamera', currentUser)
+			window.unityInstance.SendMessage('NetworkManager', 'OnUpdateCameraPlayer', currentUser)
 		}
 	})//END_SOCKET.ON
 	
