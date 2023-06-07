@@ -65,7 +65,7 @@ window.addEventListener('load', function() {
     socket.on('UPDATE_MOVE_AND_ROTATE', function(id,posX,posY,posZ,rotation) {
 		
 	    var currentUserAtr = id+':'+posX+':'+posY+':'+posZ+':'+rotation;
-		 	
+		 	console.log("Movimiento")
 		if(window.unityInstance!=null)
 		{
 		   window.unityInstance.SendMessage ('NetworkManager', 'OnUpdateMoveAndRotate',currentUserAtr);
@@ -73,17 +73,17 @@ window.addEventListener('load', function() {
 		
 	});//END_SOCKET.ON
 	
-		socket.on('UPDATE_PLAYER_ANIMATOR', function(id,key,value,type) {
+	socket.on('UPDATE_PLAYER_ANIMATOR', function(id,key,value,type) {
+
+		var currentUserAtr = id+':'+key+':'+value+':'+type;
 	
-	     var currentUserAtr = id+':'+key+':'+value+':'+type;
-		
-		
-		if(window.unityInstance!=null)
-		{
-	     // sends the package currentUserAtr to the method OnUpdateAnim in the NetworkManager class on Unity
-		  window.unityInstance.SendMessage ('NetworkManager', 'OnUpdateAnim', currentUserAtr);
-		
-		}
+	
+	if(window.unityInstance!=null)
+	{
+		// sends the package currentUserAtr to the method OnUpdateAnim in the NetworkManager class on Unity
+		window.unityInstance.SendMessage ('NetworkManager', 'OnUpdateAnim', currentUserAtr);
+	
+	}
 		
 	});//END_SOCKET.ON
 	
@@ -174,6 +174,14 @@ window.addEventListener('load', function() {
 		 
 	
 	});//END_SOCKET.ON
+
+	socket.on('UPDATE_CAMERA_PLAYER',function(id, texture){
+		var currentUser = id+":"+texture
+		console.log("Camara cliente")
+		if(window.unityInstance!=null){
+			window.unityInstance.SendMessage('NetworkManager', 'OnUpdateCameraPlayer', currentUser)
+		}
+	})
 	
 
 	
