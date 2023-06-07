@@ -501,11 +501,13 @@ if(currentUser)
 		console.log("Encendiendo camara")
 		socket.broadcast.emit('CAMERA_ACTIVATION', pack.local_player_id)
 	})
-
+	
 	socket.on("UPDATE_CAMERA", function(data){
 		var pack = JSON.parse(data)
+
+		
 		console.log("actualizar camara")
-		socket.broadcast.emit('UPDATE_CAMERA_PLAYER', pack.local_player_id, pack.texture)
+		socket.broadcast.emit('UPDATE_CAMERA_PLAYER', currentUser.id, pack.texture)
 	})
 		
 });//END_IO.ON
