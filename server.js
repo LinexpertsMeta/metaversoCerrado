@@ -498,7 +498,6 @@ if(currentUser)
 	socket.on("TOGGLE_CAMERA", function(data){
 		var pack = JSON.parse(data)
 
-		console.log("Encendiendo camara")
 		socket.broadcast.emit('CAMERA_ACTIVATION', pack.local_player_id)
 	})
 	
@@ -506,7 +505,6 @@ if(currentUser)
 		var pack = JSON.parse(data)
 
 		
-		console.log("actualizar camara")
 		socket.broadcast.emit('UPDATE_CAMERA_PLAYER', currentUser.id, pack.texture)
 	})
 		
