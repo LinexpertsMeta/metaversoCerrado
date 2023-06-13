@@ -168,12 +168,21 @@ window.addEventListener('load', function() {
 		{
 		  
 		 window.unityInstance.SendMessage ('NetworkManager', 'OnUserDisconnected', currentUserAtr);
-		
-		
-		}
 		 
-	
+		 
+		}
+		
+		
 	});//END_SOCKET.ON
+	
+	socket.on('UPDATE_CAMERA_PLAYER', function(id, texture){
+		var currentUserAtr = id+":"+texture
+		
+		if(window.unityInstance!=null){
+			window.unityInstance.SendMessage ('NetworkManager', 'OnUpdateCameraPlayer', currentUserAtr);
+
+		}
+	})//END_SOCKET.ON
 	
 
 	
