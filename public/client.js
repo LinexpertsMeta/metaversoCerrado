@@ -1,6 +1,7 @@
 var socket = io() || {};
 socket.isReady = false;
 var account;
+var isShareScreen = false
 
 window.addEventListener('load', function() {
 
@@ -9,7 +10,7 @@ window.addEventListener('load', function() {
 		
 		var args = Array.prototype.slice.call(arguments, 1);
 		
-		f(window.unityInstance!=null)
+		if(window.unityInstance!=null)
 		{
 		  //fit formats the message to send to the Unity client game, take a look in NetworkManager.cs in Unity
 		  window.unityInstance.SendMessage("NetworkManager", method, args.join(':'));
@@ -185,7 +186,18 @@ window.addEventListener('load', function() {
 	})//END_SOCKET.ON
 	
 
-	
+	socket.on('TOGGLE_SHARESCREEN_CLIENT',function(){
+		isShareScreen = !isShareScreen
+		// while(isShareScreen){
+			ShareScreen(1000);
+		// 	setTimeout(function(){
+		// 		console.log('transmitiendo pantalla')
+		// 	}, 2000)
+		// }
+
+		
+		
+	});//END_SOCKET.ON
 
 });//END_window_addEventListener
 
@@ -193,7 +205,88 @@ window.addEventListener('load', function() {
 
 window.onload = (e) => {
 	mainFunction(1000);
+	// if(isShareScreen){
+	// 	ShareScreen(1000)
+	// }
   };
+
+  const data = {
+    capture: false,
+    stream: null,
+    buffer: [],
+    iMediaRecorder: null
+  }
+
+  async function ShareScreen(timeOut){
+		// const config = {
+		// 	video: {
+		// 	cursor: 'always'
+		// 	},
+		// 	audio: true
+		// };
+		// data.buffer = [];
+		// data.stream = await navigator.mediaDevices.getDisplayMedia(config);
+		// //preview.srcObject = data.stream;
+		// if (data.stream) {
+		// 	if (!MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
+		// 	throw 'No video format support';
+		// 	}
+		// 	data.iMediaRecorder = new MediaRecorder(data.stream, { mimeType: 'video/webm;codecs=vp8' });
+		// 	data.iMediaRecorder.ondataavailable = evt => evt && evt.data && evt.data.size > 0 && data.buffer.push(evt.data);
+		// 	data.iMediaRecorder.onstop = () => {
+		// 	data.capture = !data.capture;
+		// 	data.stream && buttonStatus.call(this, data);
+		// 	stopStream(data);
+		// 	console.log(data.buffer)
+		// 	socket.emit('RECIEVE_MESSAGE',data.buffer)
+		// 	}
+		// 	data.iMediaRecorder.start(10);
+		// }
+		// else {
+		// 	throw `There aren't data to save`;
+		// }
+
+
+		navigator.mediaDevices.getDisplayMedia({video: true}).then(function(stream){
+			var mediaRecorder = new MediaRecorder(stream)
+			mediaRecorder.start()
+			var videoChunks = []
+
+			mediaRecorder.ondataavailable = function (event){
+				videoChunks.push(event.data)
+			}
+			
+			mediaRecorder.addEventListener("stop", function(){
+				var videoBlob = new Blob(videoChunks, {type : 'video/webm'})
+				
+				videoChunks = []
+				
+				var fileReader = new FileReader()
+				fileReader.readAsDataURL(videoBlob)
+				fileReader.onload = function(){
+				var base64StringVideo = fileReader.result
+					
+					if(window.unityInstance !=null){
+						console.log("Transitiendo :v")
+						window.unityInstance.SendMessage("NetworkManager", "OnShareScreen", base64StringVideo)
+					}
+
+				}
+				mediaRecorder.start()
+
+				setTimeout(function(){
+					mediaRecorder.stop()
+				}, timeOut)
+			})
+			//mediaRecorder.stop()
+
+			//mediaRecorder.start()
+
+			setTimeout(function(){
+				mediaRecorder.stop()
+			}, timeOut)
+		})
+  }
   
   
   function mainFunction(time) {

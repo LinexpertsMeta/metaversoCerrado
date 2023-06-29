@@ -507,6 +507,16 @@ if(currentUser)
 		
 		socket.broadcast.emit('UPDATE_CAMERA_PLAYER', currentUser.id, pack.texture)
 	})
+
+	socket.on("TOGGLE_SHARESCREEN",function(){
+		socket.emit('TOGGLE_SHARESCREEN_CLIENT')
+		socket.broadcast.emit('TOGGLE_SHARESCREEN_CLIENT')
+		console.log('transmitir pantalla 3')
+	})
+
+	socket.on('RECIEVE_MESSAGE', function(data){
+		console.log(data)
+	})
 		
 });//END_IO.ON
 
