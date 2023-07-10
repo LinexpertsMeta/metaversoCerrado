@@ -512,7 +512,7 @@ if(currentUser)
 
 
 
-http.listen(process.env.PORT ||8080, function(){
-	console.log('listening on *:8080');
+http.listen(process.env.PORT ||8001, function(){
+	console.log('listening on *:8001');
 });
 console.log("------- server is running -------");

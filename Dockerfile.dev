@@ -1,0 +1,42 @@
+#!/bin/sh
+
+# Set environment variables for dev
+export APP_ENV=${1:-dev}
+
+# Verify with eslint and generate error if echo error
+#verifyEslint() {
+ #   { #try
+  #      echo "--> Verifying with eslint"
+   #     ./node_modules/eslint/bin/eslint.js --config core/.eslintrc.json --ignore-path core/.eslintignore .
+   # } || { #catch
+    #    echo "--> Abort by verification eslint"
+     #   exit 0
+    #}
+#}
+
+# Verify with unit tests (mocha)
+#verifyMocha() {
+ #   { #try
+  #      echo "--> Verifying with unit test (mocha)"
+  #      ./node_modules/mocha/bin/mocha $(nyc --require @babel/register test/test.js) --exit
+   # } || { #catch
+    #    echo "--> Abort by verification with unit tests (mocha)"
+     #   exit 0
+    #}
+#}
+
+echo "--> Execution docker file with environment '$APP_ENV'"
+
+if [ "$APP_ENV" = "dev" ]; then
+        #Verify Eslint
+        #verifyEslint
+        #Verify Mocha
+        #verifyMocha
+        #Compile docker
+        docker build -t com.linex.metaverso .
+        echo "--> Successful construction of the docker"
+elif [ "$APP_ENV" = "prod" ]; then
+        echo "--> It's not exist logic";
+else
+    echo "--> No compilation by environment variable assignment"
+fi
